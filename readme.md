@@ -42,5 +42,11 @@ JEvent.unsubscribe()
 KEvent.post("put any object here")
 ```
 
+License
+-------
+Copyright (C) 2020 Mehdi Janbarari
+
+KEvent binaries and source code can be used according to the [Apache License, Version 2.0](LICENSE).
+
 ### I dedicate this library to my princess❤️
 ### If you like it, please tap the Star(⭐️) button 
