@@ -34,9 +34,9 @@ KEvent.subscribe(object : ObserverInterface<T> {
 
     }
 })
-//Unsubscribe none global subscribers or ui related subscribers
-JEvent.unsubscribe()
 
+//Unsubscribe none global subscribers or ui related subscribers
+KEvent.unsubscribe()
 
 //Post from anywhere
 KEvent.post("put any object here")
