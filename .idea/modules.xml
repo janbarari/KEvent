@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JEvent.iml" filepath="$PROJECT_DIR$/.idea/modules/JEvent.iml" group="JEvent" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="JEvent/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JEvent/jevent.iml" filepath="$PROJECT_DIR$/.idea/modules/JEvent/jevent.iml" group="JEvent/jevent" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KEvent.iml" filepath="$PROJECT_DIR$/.idea/modules/KEvent.iml" group="KEvent" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="KEvent/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/kevent/kevent.iml" filepath="$PROJECT_DIR$/.idea/modules/kevent/kevent.iml" group="KEvent/kevent" />
     </modules>
   </component>
 </project>
