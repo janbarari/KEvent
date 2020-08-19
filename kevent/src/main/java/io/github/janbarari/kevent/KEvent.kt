@@ -11,16 +11,16 @@ import java.io.ObjectOutputStream
 import java.io.Serializable
 
 object KEvent {
-    @Volatile var subscribers = ArrayList<Subscriber>()
+    @Volatile private var observers = ArrayList<Observer>()
 
-    @Synchronized fun getAllSubscribers(): ArrayList<Subscriber> {
-        return subscribers
+    @Synchronized fun getObservers(): ArrayList<Observer> {
+        return observers
     }
 
     private const val DEFAULT_POST_EVENT_LIMITATION_SIZE_IN_BYTES = 0
     private val TAG: String = this::class.java.simpleName
     private var postEventLimitationSizeInBytes: Int = DEFAULT_POST_EVENT_LIMITATION_SIZE_IN_BYTES
-    private var pendingDroppingSubscribers: ArrayList<Subscriber> = arrayListOf()
+    private var pendingDroppingObservers: ArrayList<Observer> = arrayListOf()
 
     fun setPostEventSizeLimitation(sizeInBytes: Int) {
         postEventLimitationSizeInBytes = sizeInBytes
@@ -30,83 +30,83 @@ object KEvent {
         post(event, null)
     }
 
-    fun <T : Any> post(receiverSubscriberGUID: String, event: T) {
-        post(event, receiverSubscriberGUID)
+    fun <T : Any> post(observerGUID: String, event: T) {
+        post(event, observerGUID)
     }
 
-    private fun <T : Any> post(event: T, receiverSubscriberGUID: String?) {
+    private fun <T : Any> post(event: T, observerGUID: String?) {
         GlobalScope.launch(Dispatchers.IO) {
             validateEventType(event) {
-                val subscriberIterator = getAllSubscribers().iterator()
-                while (subscriberIterator.hasNext()) {
-                    val subscriber = subscriberIterator.next()
-                    if (receiverSubscriberGUID != null) {
-                        if (subscriber.guid == receiverSubscriberGUID) {
-                            postWithThread(subscriber, event)
+                val observerIterator = getObservers().iterator()
+                while (observerIterator.hasNext()) {
+                    val observer = observerIterator.next()
+                    if (observerGUID != null) {
+                        if (observer.guid == observerGUID) {
+                            postWithThread(observer, event)
                         }
                     } else {
-                        postWithThread(subscriber, event)
+                        postWithThread(observer, event)
                     }
                 }
-                dropSubscribersIfNeeded()
+                dropObserversIfNeeded()
             }
         }
     }
 
     /**
-     * Add new subscriber
-     * @param subscriberGUID every subscriber should have an GUID to unsubscribe if needed
-     * @param observer Typed Observer of the subscriber, only subscribers will invoke that any instance of entered Type is posted
+     * Add new observer
+     * @param observerGUID every observer should have an GUID to unregister if needed
+     * @param observer Typed Observer of the observer, only observers will invoke that any instance of entered Type is posted
      */
     @Suppress("UNCHECKED_CAST")
-    inline fun <reified T> subscribe(subscriberGUID: String, observer: ObserverInterface<T>) {
-        getAllSubscribers().forEach { subscriber ->
-            if (subscriber.guid == subscriberGUID) {
-                unsubscribe(subscriberGUID)
+    inline fun <reified T> register(observerGUID: String, noinline unit: (T) -> Unit) {
+        getObservers().forEach { observer ->
+            if (observer.guid == observerGUID) {
+                unregister(observerGUID)
                 return@forEach
             }
         }
-        getAllSubscribers().add(
-            Subscriber(
+        getObservers().add(
+            Observer(
                 T::class.java,
-                subscriberGUID,
-                observer as ObserverInterface<Any>
+                observerGUID,
+                unit as (Any) -> Unit
             )
         )
     }
 
     /**
-     * @param subscriberGUID Unsubscribe the subscriber
+     * @param observerGUID Unregister the observer
      */
-    fun unsubscribe(subscriberGUID: String) {
-        val subscriberIterator = getAllSubscribers().iterator()
-        while (subscriberIterator.hasNext()) {
-            val subscriber = subscriberIterator.next()
-            if (subscriber.guid == subscriberGUID) {
-                subscriberIterator.remove()
+    fun unregister(observerGUID: String) {
+        val observerIterator = getObservers().iterator()
+        while (observerIterator.hasNext()) {
+            val observer = observerIterator.next()
+            if (observer.guid == observerGUID) {
+                observerIterator.remove()
             }
         }
     }
 
     /**
-     * Unsubscribe all subscribers that KEvent notifies
+     * Unregister all observers that KEvent notifies
      */
-    fun unsubscribeAll() {
-        getAllSubscribers().clear()
+    fun unregisterAll() {
+        getObservers().clear()
     }
 
-    private fun dropSubscribersIfNeeded() {
-        pendingDroppingSubscribers.forEach { droppedSubscriber ->
-            val subscriberIterator = getAllSubscribers().iterator()
-            while (subscriberIterator.hasNext()) {
-                val subscriber = subscriberIterator.next()
-                if (subscriber.guid == droppedSubscriber.guid) {
-                    subscriberIterator.remove()
-                    Log.d(TAG, "[$subscriber -> Dropped]")
+    private fun dropObserversIfNeeded() {
+        pendingDroppingObservers.forEach { droppedObserver ->
+            val observerIterator = getObservers().iterator()
+            while (observerIterator.hasNext()) {
+                val observer = observerIterator.next()
+                if (observer.guid == droppedObserver.guid) {
+                    observerIterator.remove()
+                    Log.d(TAG, "[$observer -> Dropped]")
                 }
             }
         }
-        pendingDroppingSubscribers.clear()
+        pendingDroppingObservers.clear()
     }
 
     private fun <T : Any> validateEventType(event: T, validated: () -> Unit) {
@@ -151,23 +151,23 @@ object KEvent {
         }
     }
 
-    private fun <T : Any> postWithThread(subscriber: Subscriber, event: T) {
-        if (subscriber.observerType == event::class.java) {
+    private fun <T : Any> postWithThread(observer: Observer, event: T) {
+        if (observer.observerType == event::class.java) {
             if (Looper.myLooper() == Looper.getMainLooper()) {
-                postToSubscriber(subscriber, event)
+                postToObserver(observer, event)
             } else {
                 GlobalScope.launch(Dispatchers.Main) {
-                    postToSubscriber(subscriber, event)
+                    postToObserver(observer, event)
                 }
             }
         }
     }
 
-    private fun <T : Any> postToSubscriber(subscriber: Subscriber, event: T) {
+    private fun <T : Any> postToObserver(observer: Observer, event: T) {
         try {
-            subscriber.observer?.observe(event)
+            observer.unit.invoke(event)
         } catch (e: Exception) {
-            pendingDroppingSubscribers.add(subscriber)
+            pendingDroppingObservers.add(observer)
         }
     }
 
