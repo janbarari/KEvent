@@ -16,7 +16,7 @@ KEvent is an open-source library for kotlin using the publisher/subscriber patte
 - Typed Observers that only accept events with determined Type
 - Post to specific observer
 - Post to specific observer with sender class
-- Event validation: Only Serializable/Parcelable data will be transferring, Events that are smaller than specific size(bytes) can be transferring(Due to avoid memory leak and increase the performance and speed(by default there is no size limitation added)
+- Event validation: Only Serializable/Parcelable data will be transferring, Events that are smaller than specific size(bytes) can be transferring(Due to avoid memory leak and increase the performance and speed, by default there is no size limitation added)
 
 ### Installation
 ```gradle
