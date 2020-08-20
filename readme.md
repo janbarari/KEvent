@@ -45,9 +45,9 @@ KEvent.unregister("ObserverID")
 //Post to all observers that can accept the type of T
 KEvent.post(T)
 //Post to an observer with the mentioned ID that can accept the type of T
-KEvent.post(T, "ObserverGUID")
+KEvent.post(T, "ObserverID")
 //Post to an observer with the mentioned ID and sender class that can accept the type of T
-KEvent.postWithSender<Sender>(T, "ObserverGUID")
+KEvent.postWithSender<Sender>(T, "ObserverID")
 ```
 Sponsor
 -------
