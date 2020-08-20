@@ -38,7 +38,6 @@ KEvent.registerWithSender<T, Sender>("ObserverID") { event ->
     //Notice: event type is T, the Only events with the type of T and posted from sender class can be observed here
 }
 
-
 //Unregister observer
 KEvent.unregister("ObserverID")
 
