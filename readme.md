@@ -11,7 +11,7 @@ KEvent is an open-source library for kotlin using the publisher/subscriber patte
 - Simplifies the communication between components
 - Using Kotlin high-order functions
 - Decouples event sender
-- Is faster like EventBus
+- Is fast like EventBus
 - Is smaller than EventBus
 - Typed Observers that only accept event's with determined Type
 - Post to specific observer
