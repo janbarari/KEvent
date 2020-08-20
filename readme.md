@@ -1,6 +1,6 @@
 # KEvent: A brand new communication library in Android & Kotlin (similar to Eventbus)
 [![Jitpack](https://jitpack.io/v/janbarari/KEvent.svg)](https://github.com/janbarari/kevent)
-[![License](http://img.shields.io/badge/License-Apache_v2.5-green.svg?style=flat)](https://github.com/janbarari/kevent)
+[![License](http://img.shields.io/badge/License-Apache_v2.0-green.svg?style=flat)](https://github.com/janbarari/kevent)
 [![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://github.com/janbarari/kevent)
 [![Release_Channel](https://img.shields.io/badge/Release_Channel-Stable-blue.svg?style=flat)](https://github.com/janbarari/kevent)
 
