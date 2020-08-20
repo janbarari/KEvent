@@ -11,9 +11,11 @@ import java.io.ObjectOutputStream
 import java.io.Serializable
 
 object KEvent {
-    @Volatile private var observers = ArrayList<Observer>()
+    @Volatile
+    private var observers = ArrayList<Observer>()
 
-    @Synchronized fun getObservers(): ArrayList<Observer> {
+    @Synchronized
+    fun getObservers(): ArrayList<Observer> {
         return observers
     }
 
@@ -26,15 +28,19 @@ object KEvent {
         postEventLimitationSizeInBytes = sizeInBytes
     }
 
-    fun <T : Any> post(event: T) {
-        post(event, null)
+    fun post(event: Any) {
+        post(null, event, null)
     }
 
-    fun <T : Any> post(observerGUID: String, event: T) {
-        post(event, observerGUID)
+    fun post(event: Any, observerGUID: String) {
+        post(observerGUID, event, null)
     }
 
-    private fun <T : Any> post(event: T, observerGUID: String?) {
+    inline fun <reified D> postWithSender(event: Any, observerGUID: String) {
+        post(observerGUID, event, D::class.java)
+    }
+
+    fun <T : Any> post(observerGUID: String?, event: T, sender: Class<*>?) {
         GlobalScope.launch(Dispatchers.IO) {
             validateEventType(event) {
                 val observerIterator = getObservers().iterator()
@@ -42,10 +48,10 @@ object KEvent {
                     val observer = observerIterator.next()
                     if (observerGUID != null) {
                         if (observer.guid == observerGUID) {
-                            postWithThread(observer, event)
+                            postWithThread(observer, event, sender)
                         }
                     } else {
-                        postWithThread(observer, event)
+                        postWithThread(observer, event, sender)
                     }
                 }
                 dropObserversIfNeeded()
@@ -56,7 +62,6 @@ object KEvent {
     /**
      * Add new observer
      * @param observerGUID every observer should have an GUID to unregister if needed
-     * @param observer Typed Observer of the observer, only observers will invoke that any instance of entered Type is posted
      */
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T> register(observerGUID: String, noinline unit: (T) -> Unit) {
@@ -71,6 +76,27 @@ object KEvent {
                 T::class.java,
                 observerGUID,
                 unit as (Any) -> Unit
+            )
+        )
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T, reified D> registerWithSender(
+        observerGUID: String,
+        noinline unit: (T) -> Unit
+    ) {
+        getObservers().forEach { observer ->
+            if (observer.guid == observerGUID) {
+                unregister(observerGUID)
+                return@forEach
+            }
+        }
+        getObservers().add(
+            Observer(
+                T::class.java,
+                observerGUID,
+                unit as (Any) -> Unit,
+                D::class.java
             )
         )
     }
@@ -151,21 +177,30 @@ object KEvent {
         }
     }
 
-    private fun <T : Any> postWithThread(observer: Observer, event: T) {
+    private fun <T : Any> postWithThread(observer: Observer, event: T, sender: Class<*>?) {
         if (observer.observerType == event::class.java) {
             if (Looper.myLooper() == Looper.getMainLooper()) {
-                postToObserver(observer, event)
+                postToObserver(observer, event, sender)
             } else {
                 GlobalScope.launch(Dispatchers.Main) {
-                    postToObserver(observer, event)
+                    postToObserver(observer, event, sender)
                 }
             }
         }
     }
 
-    private fun <T : Any> postToObserver(observer: Observer, event: T) {
+    private fun <T : Any> postToObserver(observer: Observer, event: T, sender: Class<*>?) {
         try {
-            observer.unit.invoke(event)
+            if (observer.sender != null && sender != null) {
+                if (observer.sender == sender) {
+                    observer.unit.invoke(event)
+                }
+            } else {
+                if (sender == null && observer.sender != null) {
+                    return
+                }
+                observer.unit.invoke(event)
+            }
         } catch (e: Exception) {
             pendingDroppingObservers.add(observer)
         }
