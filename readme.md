@@ -31,10 +31,10 @@ implementation 'com.github.janbarari:kevent:v1.1.0'
 
 ```kotlin
 //Register observer
-KEvent.register<T>(stringObserverGUID) { event ->
+KEvent.register<T>("ObserverID") { event ->
     //Notice: event type is T, the Only events with the type of T can be observed here
 }
-KEvent.registerWithSender<T, Sender>(stringObserverGUID) { event ->
+KEvent.registerWithSender<T, Sender>("ObserverID") { event ->
     //Notice: event type is T, the Only events with the type of T and posted from sender class can be observed here
 }
 
