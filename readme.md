@@ -13,7 +13,7 @@ KEvent is an open-source library for kotlin using the publisher/subscriber patte
 - Decouples event sender
 - Is fast like EventBus
 - Is smaller than EventBus
-- Typed Observers that only accept event's with determined Type
+- Typed Observers that only accept events with determined Type
 - Post to specific observer
 - Post to specific observer with sender class
 - Event validation(Only Serializable/Parcelable data will be transferring, Events that are smaller than specific size(bytes) can be transferring)
