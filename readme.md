@@ -5,7 +5,8 @@ KEvent is an open-source library for kotlin using the publisher/subscriber patte
 
 ![](image.jpg)
 
-### Benefit's
+Benefits
+--------
 - Global observers that always alive
 - Is none class implementation(no need to use in a class body - unlike Eventbus)
 - Simplifies the communication between components
@@ -18,7 +19,8 @@ KEvent is an open-source library for kotlin using the publisher/subscriber patte
 - Post to specific observer with sender class
 - Event validation: Only Serializable/Parcelable data will be transferring, Events that are smaller than specific size(bytes) can be transferring(Due to avoid memory leak and increase the performance and speed, by default there is no size limitation added)
 
-### Installation
+Installation
+------------
 ```gradle
 allprojects {
     repositories {
@@ -29,6 +31,8 @@ allprojects {
 implementation 'com.github.janbarari:kevent:v1.1.0'
 ```
 
+Setup
+-----
 ```kotlin
 //Register observer
 KEvent.register<T>("ObserverID") { event ->
