@@ -1,7 +1,8 @@
 # KEvent: A brand new communication library in Android & Kotlin (similar to Eventbus)
-[![](https://jitpack.io/v/janbarari/KEvent.svg)](https://github.com/janbarari/kevent)
+[![Jitpack](https://jitpack.io/v/janbarari/KEvent.svg)](https://github.com/janbarari/kevent)
 [![License](http://img.shields.io/badge/license-apache_v2.5-green.svg?style=flat)](https://github.com/janbarari/kevent)
 [![API](https://img.shields.io/badge/API-14%2B-blue.svg?style=flat)](https://github.com/janbarari/kevent)
+[![Release_Channel](https://img.shields.io/badge/Release_Channel-Stable-green.svg?style=flat)](https://github.com/janbarari/kevent)
 
 KEvent is an open-source library for kotlin using the publisher/subscriber pattern for loose coupling. KEvent enables central communication to decoupled classes with just a few lines of code - simplifying the code, removing dependencies and speeding up app development.
 
