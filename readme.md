@@ -51,15 +51,14 @@ KEvent.postWithSender<Sender>(T, "ObserverID")
 ```
 Sponsor
 -------
-If you like and use it, please tap the Star(⭐️) button at the above.
-
+If you like and use it, please tap the Star(⭐️) button at the above.  
 This library is free for all people around the world; hence, it's not profitable. You can make me happy by donating me :)
 
 [![Bitcoin](https://raw.githubusercontent.com/janbarari/kevent/master/bitcoin.png)](https://blockchair.com/bitcoin/address/16mwX15btjFEYUuktfXnExxykvUkZu1a1C)
 
 License
 -------
-Copyright (C) 2020 Mehdi Janbarari
+Copyright (C) 2020 Mehdi Janbarari  
 KEvent binaries and source code can be used according to the [Apache License, Version 2.0](LICENSE).
 
 ### I dedicate it to my princess❤️
