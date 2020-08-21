@@ -59,6 +59,7 @@ Sponsor
 -------
 If you like and use it, please tap the Star(⭐️) button at the above.  
 This library is free for all; hence, it's not profitable. You can make me happy by donating me :)  
+![](bitcoin.jpg)
 Bitcoin Address: 1JanwGtqUGM48X7yb41k713THhJujD3Qgq
 
 License
