@@ -57,9 +57,12 @@ KEvent.postWithSender<Sender>(T, "ObserverID")
 ```
 Sponsor
 -------
-If you like and use it, please tap the Star(⭐️) button at the above.  
-This library is free for all; hence, it's not profitable. You can make me happy by donating me :)  
-[![Bitcoin Address:](https://raw.githubusercontent.com/janbarari/kevent/master/bitcoin.png)](https://blockchair.com/bitcoin/address/1JanwGtqUGM48X7yb41k713THhJujD3Qgq)
+### If you like and use it, please tap the Star(⭐️) button at the above.  
+This source code is free for all; hence, it's not profitable. You can make me happy by donating me :)
+
+[![](https://img.shields.io/badge/Dogecoin-Click%20to%20see%20the%20address%20or%20scan%20the%20QR%20code-yellow.svg?style=flat)](https://blockchair.com/dogecoin/address/DB87foUxetrQRpAbWkrhexZeVtnzwyqhSL)
+
+[![](https://img.shields.io/badge/Bitcoin-Click%20to%20see%20the%20address%20or%20scan%20the%20QR%20code-orange.svg?style=flat)](https://blockchair.com/bitcoin/address/bc1qj30t3hmw0gat3vmwye972ce4sfrc5r5mz0ctr6)
 
 License
 -------
