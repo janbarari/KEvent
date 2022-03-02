@@ -69,5 +69,3 @@ License
 Copyright (C) 2020 Mehdi Janbarari  
 KEvent binaries and source code can be used according to the [Apache License, Version 2.0](LICENSE).
 
-### I dedicate it to my princess❤️
-
